@@ -182,10 +182,10 @@ def ____banner____():
 Follow the author for more updates!
 Author    : gab hndsm
 Link      : https://www.facebook.com/profile.php?id=61581977649127
-┊ Name    : RAJA TOOL
-┊ Age     : 21
+┊ Name    : GAB HANDSM
+┊ Age     : 20
 ┊ Gender  : Male
-┊ Hobbies : Coding and More
+┊ Course  : BS information technology
       
 ============================
                 TOOL BY gab hndsm

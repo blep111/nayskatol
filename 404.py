@@ -3,8 +3,6 @@
 facebook_proxy_tool.py
 ----------------------
 This script creates email (Mail.tm) and Facebook accounts using proxies.
-It loads the proxies from proxies.txt, tests them,
-creates a Mail.tm account, and then attempts a Facebook registration.
 Note: The Facebook registration code is for demonstration only.
 """
 
@@ -21,7 +19,7 @@ import time
 print('\033[1;35m' + f"""
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓           
 > › Github :- \033[1;36m@blep111\033[1;35m 
-> › By      :- \033[1;36mgabpogi\033[1;35m
+> › By      :- \033[1;36mgabhndsm\033[1;35m
 > › This tool is supported with proxy’s
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛""" + '\033[0m')
 
@@ -30,13 +28,16 @@ print('\x1b[38;5;22m•' * 60)
 print('\x1b[38;5;22m•' * 60)
 print('\x1b[38;5;208m⇼' * 60)
 
+# Increase timeout values as needed.
+REQUEST_TIMEOUT = 15
+
 def generate_random_string(length):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
 def get_mail_domains(proxy=None):
     url = "https://api.mail.tm/domains"
     try:
-        response = requests.get(url, proxies=proxy, timeout=10)
+        response = requests.get(url, proxies=proxy, timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             return response.json().get('hydra:member', [])
         else:
@@ -59,13 +60,13 @@ def create_mail_tm_account(proxy=None):
         headers = {"Content-Type": "application/json"}
         data = {"address": f"{username}@{domain}", "password": password}
         try:
-            response = requests.post(url, headers=headers, json=data, proxies=proxy, timeout=10)
+            response = requests.post(url, headers=headers, json=data, proxies=proxy, timeout=REQUEST_TIMEOUT)
             if response.status_code == 201:
                 return f"{username}@{domain}", password, first_name, last_name, birthday
             else:
-                print(f'\033[1;31m[×] Email Registration Error : {response.text}\033[0m')
+                print(f'\033[1;31m[×] Email Registration Error: {response.status_code} - {response.text}\033[0m')
         except Exception as e:
-            print(f'\033[1;31m[×] Email API Error : {e}\033[0m')
+            print(f'\033[1;31m[×] Email API Error: {e}\033[0m')
     return None, None, None, None, None
 
 def register_facebook_account(email, password, first_name, last_name, birthday, proxy=None):
@@ -95,9 +96,13 @@ def register_facebook_account(email, password, first_name, last_name, birthday, 
     req['sig'] = hashlib.md5((sig + secret).encode()).hexdigest()
     api_url = 'https://b-api.facebook.com/method/user.register'
     reg = _call(api_url, req, proxy)
+    # Log the full response for diagnostic purposes.
+    print(f'\033[1;33m[!] Facebook API response: {reg}\033[0m')
     try:
-        user_id = reg['new_user_id']
-        token = reg['session_info']['access_token']
+        user_id = reg.get('new_user_id')
+        token = reg.get('session_info', {}).get('access_token')
+        if not user_id or not token:
+            raise ValueError("Missing new_user_id or access_token in response")
         print(f'''\033[1;32m
 -----------GENERATED-----------
 EMAIL : {email}
@@ -109,7 +114,6 @@ GENDER : {gender}
 TOKEN : {token}
 -----------GENERATED-----------
 \033[0m''')
-
         with open('accounts_log.txt', 'a') as f:
             f.write(f'{email},{password},{first_name},{last_name},{birthday},{gender},{token}\n')
     except Exception as e:
@@ -120,15 +124,18 @@ def _call(url, params, proxy=None, post=True):
     headers = {
         'User-Agent': '[FBAN/FB4A;FBAV/35.0.0.48.273;FBDM/{density=1.33125,width=800,height=1205};FBLC/en_US;FBCR/;FBPN/com.facebook.katana;FBDV/Nexus 7;FBSV/4.1.1;FBBK/0;]'
     }
-    for _ in range(3):  # Retry up to 3 times
+    for attempt in range(3):  # Retry up to 3 times
         try:
             if post:
-                response = requests.post(url, data=params, headers=headers, proxies=proxy, timeout=10)
+                response = requests.post(url, data=params, headers=headers, proxies=proxy, timeout=REQUEST_TIMEOUT)
             else:
-                response = requests.get(url, params=params, headers=headers, proxies=proxy, timeout=10)
+                response = requests.get(url, params=params, headers=headers, proxies=proxy, timeout=REQUEST_TIMEOUT)
             if response.status_code == 200:
                 return response.json()
+            else:
+                print(f'\033[1;31m[×] API call returned: {response.status_code} - {response.text}\033[0m')
         except Exception as e:
+            print(f'\033[1;31m[×] API call exception on attempt {attempt+1}: {e}\033[0m')
             if working_proxies:
                 proxy = random.choice(working_proxies)
     return {}
@@ -140,7 +147,7 @@ def test_proxy(proxy, q, valid_proxies):
 
 def test_proxy_helper(proxy):
     try:
-        response = requests.get('https://api.mail.tm', proxies=proxy, timeout=5)
+        response = requests.get('https://api.mail.tm', proxies=proxy, timeout=REQUEST_TIMEOUT)
         print(f'\033[1;32m[✓] Working proxy: {proxy["http"]}\033[0m')
         return response.status_code == 200
     except Exception as e:

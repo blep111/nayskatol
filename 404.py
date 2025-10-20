@@ -167,7 +167,7 @@ def window1():
     return random.choice([A, B, C, D])
 
 # Set window title
-sys.stdout.write('\x1b]2;【RAJA TOOL】\x07')
+sys.stdout.write('\x1b]2;【GAB TOOL】\x07')
 
 def ____banner____():
     if 'win' in sys.platform:
@@ -177,14 +177,14 @@ def ____banner____():
     print("""\033[1;32m
         
                   (\  (\ 
- ("• - •")   Hello . . . 
+ ("• - •")  KUPAL  . . . 
  ━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Follow the author for more updates!
 Author    : gab hndsm
 Link      : https://www.facebook.com/profile.php?id=61581977649127
 ┊ Name    : GAB HANDSM
-┊ Age     : 20
-┊ Gender  : Male
+┊ Age     : Secret
+┊ Gender  : Lalaki
 ┊ Course  : BS information technology
       
 ============================

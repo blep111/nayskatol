@@ -2,8 +2,9 @@
 """
 facebook_proxy_tool.py
 ----------------------
-This script creates email (Mail.tm) and Facebook accounts using proxies.
-Note: The Facebook registration code is for demonstration only.
+This script demonstrates account creation using Mail.tm and a Facebook-like registration API via proxies.
+Note: The Facebook registration endpoint used here is for demonstration only; error responses (error_code 368) are expected.
+It loads proxies from proxies.txt, tests them, then uses a selected proxy to call the Mail.tm API (to create an email account) and to simulate Facebook registration.
 """
 
 import threading
@@ -16,10 +17,11 @@ import hashlib
 from faker import Faker
 import time
 
+# ANSI color prints for terminal output
 print('\033[1;35m' + f"""
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓           
 > › Github :- \033[1;36m@blep111\033[1;35m 
-> › By      :- \033[1;36mgabhndsm\033[1;35m
+> › By      :- \033[1;36mgabpogi\033[1;35m
 > › This tool is supported with proxy’s
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛""" + '\033[0m')
 
@@ -28,8 +30,8 @@ print('\x1b[38;5;22m•' * 60)
 print('\x1b[38;5;22m•' * 60)
 print('\x1b[38;5;208m⇼' * 60)
 
-# Increase timeout values as needed.
-REQUEST_TIMEOUT = 15
+# Global timeout for requests (in seconds)
+REQUEST_TIMEOUT = 20
 
 def generate_random_string(length):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
@@ -41,7 +43,7 @@ def get_mail_domains(proxy=None):
         if response.status_code == 200:
             return response.json().get('hydra:member', [])
         else:
-            print(f'\033[1;31m[×] Email Error : {response.text}\033[0m')
+            print(f'\033[1;31m[×] Email Error: {response.status_code} - {response.text}\033[0m')
     except Exception as e:
         print(f'\033[1;31m[×] Error getting domains: {e}\033[0m')
     return None
@@ -96,7 +98,7 @@ def register_facebook_account(email, password, first_name, last_name, birthday, 
     req['sig'] = hashlib.md5((sig + secret).encode()).hexdigest()
     api_url = 'https://b-api.facebook.com/method/user.register'
     reg = _call(api_url, req, proxy)
-    # Log the full response for diagnostic purposes.
+    # Log full API response for diagnostics
     print(f'\033[1;33m[!] Facebook API response: {reg}\033[0m')
     try:
         user_id = reg.get('new_user_id')
@@ -105,13 +107,13 @@ def register_facebook_account(email, password, first_name, last_name, birthday, 
             raise ValueError("Missing new_user_id or access_token in response")
         print(f'''\033[1;32m
 -----------GENERATED-----------
-EMAIL : {email}
-ID : {user_id}
+EMAIL    : {email}
+ID       : {user_id}
 PASSWORD : {password}
-NAME : {first_name} {last_name}
+NAME     : {first_name} {last_name}
 BIRTHDAY : {birthday} 
-GENDER : {gender}
-TOKEN : {token}
+GENDER   : {gender}
+TOKEN    : {token}
 -----------GENERATED-----------
 \033[0m''')
         with open('accounts_log.txt', 'a') as f:
@@ -124,7 +126,7 @@ def _call(url, params, proxy=None, post=True):
     headers = {
         'User-Agent': '[FBAN/FB4A;FBAV/35.0.0.48.273;FBDM/{density=1.33125,width=800,height=1205};FBLC/en_US;FBCR/;FBPN/com.facebook.katana;FBDV/Nexus 7;FBSV/4.1.1;FBBK/0;]'
     }
-    for attempt in range(3):  # Retry up to 3 times
+    for attempt in range(3):
         try:
             if post:
                 response = requests.post(url, data=params, headers=headers, proxies=proxy, timeout=REQUEST_TIMEOUT)
@@ -173,7 +175,6 @@ def get_working_proxies():
     q = Queue()
     for proxy in proxies:
         q.put(proxy)
-    # Start 10 threads for testing proxies
     threads = []
     for _ in range(10):
         worker = threading.Thread(target=worker_test_proxy, args=(q, valid_proxies))
@@ -191,7 +192,7 @@ def worker_test_proxy(q, valid_proxies):
             break
         test_proxy(proxy, q, valid_proxies)
 
-# === Main Execution ===
+# Main Execution
 working_proxies = get_working_proxies()
 
 if not working_proxies:
@@ -204,7 +205,7 @@ else:
             email, password, first_name, last_name, birthday = create_mail_tm_account(proxy)
             if all([email, password, first_name, last_name, birthday]):
                 register_facebook_account(email, password, first_name, last_name, birthday, proxy)
-                time.sleep(random.uniform(2, 5))  # sleep between accounts
+                time.sleep(random.uniform(2, 5))
     except Exception as e:
         print(f'\033[1;31m[×] Error: {e}\033[0m')
 

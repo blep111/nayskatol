@@ -5,11 +5,11 @@ Instagram = 'Instagram.com/Dapunta.Ratya'
 Whatsapp  = '082245780524'
 YouTube   = 'Youtube.com/channel/UCZqnZlJ0jfoWSnXrNEj5JHA'
 
-#--> Colors
-P = "\x1b[38;5;231m" # White
-M = "\x1b[38;5;196m" # Red
-H = "\x1b[38;5;46m"  # Green
-A = '\x1b[38;5;248m' # Gray
+#--> Warna
+P = "\x1b[38;5;231m" # Putih
+M = "\x1b[38;5;196m" # Merah
+H = "\x1b[38;5;46m"  # Hijau
+A = '\x1b[38;5;248m' # Abu-Abu
 
 #--> Import Module & Run
 try :
@@ -17,7 +17,7 @@ try :
     from datetime import datetime
 except Exception as e :
     print(e)
-    exit('\nAn Error Occurred!')
+    exit('\nTerjadi Kesalahan!')
 try :
     import requests
 except Exception as e :
@@ -34,10 +34,10 @@ except Exception as e :
 #--> Global Variable
 auth1 = 'Dapunta Khurayra X'
 auth2 = 'Suci Maharani Putri'
-reco = 'Do Not Recode Bro, Just Use It'
-rede = 'Told You Not To Recode'
+reco = 'Gausa Direcode Bos, Tinggal Pake Aja'
+rede = 'Dibilangin Gausa Direcode'
 key = len(auth1)*len(auth2)-len(auth1)
-bulan = {'1':'January','2':'February','3':'March','4':'April','5':'May','6':'June','7':'July','8':'August','9':'September','10':'October','11':'November','12':'December'}
+bulan = {'1':'Januari','2':'Februari','3':'Maret','4':'April','5':'Mei','6':'Juni','7':'Juli','8':'Agustus','9':'September','10':'Oktober','11':'November','12':'Desember'}
 ok = 0
 cp = 0
 boys_name = ['Axel Lateef Noah','Anzel Qasim Wisthara','Basheer Malik Yazdan','Bernardus Clementine Christian','Carel Vasco Zachariah','Cyrus Osmanth Elkanah','Damian Vasyl Isaac','Dominic Valdi Xander','Ephraim Benedict Gevariel','El Fatih Ghazwan','Fawwaz Rafisqy Ezaz','Faheem Fakhri Isyraq','Gianluca Nathanael Nadav','Haddad Ammar Ar-Rayyan','Istafa Tabriz Qiwam','Kenneth Krisantus Lazarus','Nathanael Alfred William','Vaskylo Yeremia Clearesta','Xaferius Eliel Antonios','Yesaya Nathanael Liam']
@@ -48,26 +48,27 @@ def clear():
     if "linux" in sys.platform.lower():os.system('clear')
     elif "win" in sys.platform.lower():os.system('cls')
 
-#--> Time
+#--> Waktu
 def waktu():
-    _bulan_  = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][datetime.now().month - 1]
+    _bulan_  = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][datetime.now().month - 1]
     hari_ini = ("%s%s%s"%(datetime.now().day,_bulan_,datetime.now().year))
     return(str(hari_ini.lower()))
-#--> Delay helper
+
+#--> Penjeda Waktu
 def jeda(t):
     for x in range(t+1):
-        print('\r%sWait %s Seconds                     '%(P,str(t)),end='');sys.stdout.flush()
+        print('\r%sTunggu %s Detik                     '%(P,str(t)),end='');sys.stdout.flush()
         t -= 1
         if t == 0: break
         else: time.sleep(1)
 def tunggu_kode(t):
     for x in range(t+1):
-        print('\r%sWait For Code %s Seconds                     '%(P,str(t)),end='');sys.stdout.flush()
+        print('\r%sTunggu Kode %s Detik                     '%(P,str(t)),end='');sys.stdout.flush()
         t -= 1
         if t == 0: break
         else: time.sleep(1)
 
-#--> Vivo User Agent
+#--> User Agent Vivo
 def random_ua_vivo():
     a = random.randrange(112,115)
     b = random.randrange(1000,10000)
@@ -81,7 +82,7 @@ def random_ua_vivo():
     ua = f'Mozilla/5.0 (Linux; Android {os_ver}; {dv_typ} Build/{bl_typ}.{dv_ver}.00{sd_ver}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{ch_ver} Mobile Safari/537.36'
     return(ua)
 
-#--> Samsung User Agent
+#--> User Agent Samsung
 def random_ua_samsung():
     a = random.randrange(112,115)
     b = random.randrange(1000,10000)
@@ -95,7 +96,7 @@ def random_ua_samsung():
     ua = f'Mozilla/5.0 (Linux; Android {os_ver}; {dv_typ} Build/{bl_typ}.{dv_ver}.00{sd_ver}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{ch_ver} Mobile Safari/537.36'
     return(ua)
 
-#--> Realme User Agent
+#--> User Agent Realme
 def random_ua_realme():
     a = random.randrange(112,115)
     b = random.randrange(1000,10000)
@@ -109,7 +110,7 @@ def random_ua_realme():
     ua = f'Mozilla/5.0 (Linux; Android {os_ver}; {dv_typ} Build/{bl_typ}.{dv_ver}.00{sd_ver}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/{ch_ver} Mobile Safari/537.36'
     return(ua)
 
-#--> Custom User Agent
+#--> User Agent Custom
 def random_ua_custom():
     try:
         _file_ = uman
@@ -138,6 +139,7 @@ def random_ua_custom():
         return(ua3)
     except Exception as e:
         return('Mozilla/5.0 (Linux; Android 11; vivo 1918 Build/RP1A.200720.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/112.0.0000.00 Mobile Safari/537.36')
+
 #--> Convert Cookies
 def cvt(st,ran):
     try:
@@ -165,13 +167,13 @@ class menu:
         print('%s[%s2%s] %sCheck Result'%(M,P,M,P))
         print('%s[%s3%s] %sSettings'%(M,P,M,P))
         print('%s[%s4%s] %sBot'%(M,P,M,P))
-        x = input(' %s└─ %sChoose %s: %s'%(M,P,M,P)).lower()
+        x = input(' %s└─ %sPilih %s: %s'%(M,P,M,P)).lower()
         print('')
         if   x in ['1','01','001','a']: menu_create()
         elif x in ['2','02','002','b']: menu_check()
         elif x in ['3','03','003','c']: belum_tersedia()
         elif x in ['4','04','004','d']: belum_tersedia()
-        else: exit('%sEnter Correct Option!%s'%(M,P))
+        else: exit('%sIsi Yang Benar!%s'%(M,P))
 
 #--> Menu Create
 class menu_create:
@@ -179,36 +181,36 @@ class menu_create:
         global kelamin, namstat, nameme, web_email, tampil, useragent, uman, passtat, password
         try:os.mkdir('Akun_New')
         except Exception as e :pass
-        print('      %s◉ %sRecommended   %s◉ %sNot Recommended   ◉ Neutral'%(H,P,M,P))
+        print('      %s◉ %sRekomendasi   %s◉ %sTidak Rekomendasi   ◉ Netral'%(H,P,M,P))
         print('')
-        kelamin   = input('%s[%s•%s] %sAccount Male/Female/Random [%sl%s/%sp%s/%sr%s] : '%(M,P,M,P,H,P,H,P,M,P)).lower()
-        namanama  = input('%s[%s•%s] %sUse Random/Manual Name [%sr%s/%sm%s] : '%(M,P,M,P,M,P,H,P)).lower()
+        kelamin   = input('%s[%s•%s] %sAkun Laki/Perempuan/Random [%sl%s/%sp%s/%sr%s] : '%(M,P,M,P,H,P,H,P,M,P)).lower()
+        namanama  = input('%s[%s•%s] %sGunakan Nama Random/Manual [%sr%s/%sm%s] : '%(M,P,M,P,M,P,H,P)).lower()
         if namanama in ['m','manual','0','00']:
             namstat = 'Manual'
-            nameme = input(' %s└─ %sName : %s'%(M,P,M)).split(',')
+            nameme = input(' %s└─ %sNama : %s'%(M,P,M)).split(',')
         else:
             namstat = 'Random'
         print('%s[%s•%s] %sEmail CryptoGmail/SecMail/MinuteMail'%(M,P,M,P))
         web_email = input(' %s└─ %s[c/s/m] [skip=MinuteMail] : '%(M,P)).lower()
-        tampil    = input('%s[%s•%s] %sShow CP Accounts [%sy%s/%st%s] : '%(M,P,M,P,M,P,H,P)).lower()
+        tampil    = input('%s[%s•%s] %sTampilkan Akun CP [%sy%s/%st%s] : '%(M,P,M,P,M,P,H,P)).lower()
         print('%s[%s•%s] %sUser Agent Vivo/Samsung/Realme/Manual'%(M,P,M,P))
-        useragent = input(' %s└─ %s[v/s/r/m] [skip=static] : '%(M,P)).lower()
+        useragent = input(' %s└─ %s[v/s/r/m] [skip=statis] : '%(M,P)).lower()
         if useragent in ['m','manual','0','00']:
             uman = input(' %s└─ %sUser Agent : %s'%(M,P,M))
             if uman == '' or uman == ' ':
-                exit('%sEnter Correctly!%s'%(M,P))
+                exit('%sIsi Yang Benar!%s'%(M,P))
         else:
             uman = 'Mozilla/5.0 (Linux; Android 13; RMX3686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.36'
-        passtat   = input('%s[%s•%s] %sUse Random/Manual Password [%sr%s/%sm%s] : '%(M,P,M,P,H,P,M,P)).lower()
+        passtat   = input('%s[%s•%s] %sGunakan Password Random/Manual [%sr%s/%sm%s] : '%(M,P,M,P,H,P,M,P)).lower()
         if passtat in ['m','manual','b','2','02']:
             password = input(' %s└─ %sPassword : %s'%(M,P,M))
             if len(password) < 6:
-                exit('%sPassword Minimum 6 Characters!%s'%(M,P))
+                exit('%sPassword Minimal 6 Digit!%s'%(M,P))
             if password in ['akusayangkamu','123456','iloveyou','password','qwerty','sayang','anjing','bismillah']:
-                exit('%sUse A Strong Password!%s'%(M,P))
+                exit('%sGunakan Password Yang Kuat!%s'%(M,P))
         else:
             password = 'dapuntaloverani'
-        d = input('%s[%s•%s] %sSet Delay (%sIn Minutes%s) : '%(M,P,M,P,M,P))
+        d = input('%s[%s•%s] %sBeri Delay (%sDalam Menit%s) : '%(M,P,M,P,M,P))
         if d == '' or d == ' ':
             d = 1
         print('')
@@ -218,17 +220,18 @@ class menu_create:
             else: print(reco)
     def hitung(self,a):
         for x in range(a+1):
-            print('\r[%sOK:%s%s] [%sCP:%s%s] Wait %s Seconds         '%(H,str(ok),P,M,str(cp),P,str(a)),end='');sys.stdout.flush()
+            print('\r[%sOK:%s%s] [%sCP:%s%s] Tunggu %s Detik         '%(H,str(ok),P,M,str(cp),P,str(a)),end='');sys.stdout.flush()
             a -= 1
             time.sleep(1)
+
 #--> Create Facebook Account
 class create_fb:
 
-    #--> Gather All
+    #--> Tampung Kabeh
     def __init__(self):
         self.file  = 'Akun_New/%s.txt'%(waktu())
-        self.abc = requests.Session() #--> Email session
-        self.xyz = requests.Session() #--> Facebook session
+        self.abc = requests.Session() #--> Sesi Email
+        self.xyz = requests.Session() #--> Sesi Facebook
         self.abc.cookies.clear()
         self.xyz.cookies.clear()
         if   useragent in ['v','vivo','1','01','a']:    self.ua = random_ua_vivo()
@@ -276,7 +279,8 @@ class create_fb:
             name = f'{nam1} {nam2} {nam3}'
         klop = f'{name}|{gder}'
         return(klop)
-#--> Generate Random Phone Number
+
+    #--> Generate Random Phone Number
     def get_nope(self):
         na   = random.choice(['77','78','59'])
         ni   = str(random.randrange(1000,10000))
@@ -294,7 +298,6 @@ class create_fb:
         return(pw.lower())
 
     #--> Generate Email & Code From Cryptogmail
-
     def get_email_cryptogmail(self):
         nam = self.name.lower().replace(' ','')
         jam = str(datetime.now().strftime("%X")).replace(':','')
@@ -337,8 +340,9 @@ class create_fb:
         pos = self.abc.post('https://10minutemail.net/address.api.php',data=dat,headers=self.head_email,cookies={'cookie':self.cookie_email},allow_redirects=True).json()
         kode = re.search(r'FB-([^ ]+)',str(pos)).group(1)
         return(kode)
-#--> Create Facebook Route
-    def scrap1(self): #--> Initial Post Login
+
+    #--> Create Facebook Route
+    def scrap1(self): #--> Post Login Awal
         req = bs(self.xyz.get('https://m.facebook.com/reg/?is_two_steps_login=0&cid=103&refsrc=deprecated&soft=hjk',headers=self.headers_get).content,'html.parser')
         fom = req.find('form',{'method':'post'})
         data = {
@@ -392,20 +396,20 @@ class create_fb:
         pos = bs(self.xyz.post(next,data=data,headers=self.headers_get,cookies={'cookie':cok},allow_redirects=True).content,'html.parser')
         if key/len(auth1) != len(auth1): print(rede)
         else:
-            if pos.find('title').text == 'Confirm Your Account': #--> If Account Already Created
+            if pos.find('title').text == 'Konfirmasikan Akun Anda': #--> Jika Akun Sudah Dibuat
                 self.scrap4()
             else:
                 rog = pos.find('form',{'method':'post'})
-                if 'login/device-based/update-nonce' in str(rog['action']): #--> If Enter Save Device Menu
+                if 'login/device-based/update-nonce' in str(rog['action']): #--> Jika Masuk Menu Save Device
                     self.scrap2(rog)
-                elif 'conf/notifmedium/send_code' in str(rog['action']): #--> If Directly Enter Phone Code Request Menu
+                elif 'conf/notifmedium/send_code' in str(rog['action']): #--> Jika Langsung Masuk Menu Minta Kode Nope
                     self.scrap3(rog)
-                elif 'checkpoint' in str(rog['action']): #--> If Checkpoint
+                elif 'checkpoint' in str(rog['action']): #--> Jika Checkpoint
                     self.printing('CP')
                 else:
-                    print('\rAn Error Occurred                    ',end='');sys.stdout.flush()
+                    print('\rTerjadi Kesalahan                    ',end='');sys.stdout.flush()
     def scrap2(self,fom): #--> Save Device OK
-        print('\rPassed Stage 1                    ',end='');sys.stdout.flush()
+        print('\rLolos Tahap 1                    ',end='');sys.stdout.flush()
         data = {
             'fb_dtsg'    : re.search('name="fb_dtsg" type="hidden" value="(.*?)"',str(fom)).group(1),
             'jazoest'    : re.search('name="jazoest" type="hidden" value="(.*?)"',str(fom)).group(1),
@@ -419,14 +423,14 @@ class create_fb:
         pos = bs(self.xyz.post(next,data=data,headers=self.headers_get,cookies={'cookie':cok},allow_redirects=True).content,'html.parser')
         rog = pos.find('form',{'method':'post'})
         self.scrap3(rog)
-def scrap3(self,fom): #--> Request Phone Code
-        print('\rPassed Stage 2                    ',end='');sys.stdout.flush()
+    def scrap3(self,fom): #--> Minta Kode Nope
+        print('\rLolos Tahap 2                    ',end='');sys.stdout.flush()
         try:
             data = {
                 'fb_dtsg' : re.search('name="fb_dtsg" type="hidden" value="(.*?)"',str(fom)).group(1),
                 'jazoest' : re.search('name="jazoest" type="hidden" value="(.*?)"',str(fom)).group(1),
                 'medium'  : 'sms',
-                'submit'  : 'Send code'}
+                'submit'  : 'Kirim kode'}
             cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()])
             cok += self.perangkat
             next = 'https://m.facebook.com' + fom['action']
@@ -435,7 +439,7 @@ def scrap3(self,fom): #--> Request Phone Code
         except Exception as e:
             self.printing('CP')
     def scrap4(self): #--> Add Email
-        print('\rPassed Stage 3                    ',end='');sys.stdout.flush()
+        print('\rLolos Tahap 3                    ',end='');sys.stdout.flush()
         cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()])
         cok += self.perangkat
         try:
@@ -448,7 +452,7 @@ def scrap3(self,fom): #--> Request Phone Code
                 'reg_instance' : re.search('name="reg_instance" type="hidden" value="(.*?)"',str(fom)).group(1),
                 'new'          : self.email,
                 'next'         : '',
-                'submit'       : 'Add'}
+                'submit'       : 'Tambahkan'}
             cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()])
             cok += self.perangkat
             next = 'https://m.facebook.com' + fom['action']
@@ -458,7 +462,7 @@ def scrap3(self,fom): #--> Request Phone Code
         except Exception as e:
             self.printing('CP')
     def scrap5(self,req): #--> Confirm Code
-        print('\rPassed Stage 4                    ',end='');sys.stdout.flush()
+        print('\rLolos Tahap 4                    ',end='');sys.stdout.flush()
         cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()])
         cok += self.perangkat
         try:
@@ -484,7 +488,7 @@ def scrap3(self,fom): #--> Request Phone Code
             self.semi_final()
         except Exception as e:
             self.printing('CP')
-def zero_optin(self): #--> For Data Mode (No WiFi)
+    def zero_optin(self): #--> Khusus Mode Data (No Wifi)
         try:
             cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()]) + self.perangkat
             req1 = bs(self.xyz.get('https://mbasic.facebook.com',headers=self.headers_get,cookies={'cookie':cok},allow_redirects=True).content,'html.parser')
@@ -495,18 +499,18 @@ def zero_optin(self): #--> For Data Mode (No WiFi)
             data = {
                 'fb_dtsg' : re.search('name="fb_dtsg" type="hidden" value="(.*?)"',str(fom)).group(1),
                 'jazoest' : re.search('name="jazoest" type="hidden" value="(.*?)"',str(fom)).group(1),
-                'submit'  : 'OK, Use Data'}
+                'submit'  : 'OK, Gunakan Data'}
             nuk  = 'https://mbasic.facebook.com' + fom['action']
             cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()]) + self.perangkat
             pos7 = self.xyz.post(nuk,data=data,headers=self.headers_get,cookies={'cookie':cok},allow_redirects=True)
-            print('\rSuccessfully Skipped Free Mode                ',end='');sys.stdout.flush()
+            print('\rBerhasil Skip Free Mode                ',end='');sys.stdout.flush()
         except Exception as e: pass
-    def semi_final(self): #--> Sorter
-        print('\rPassed Stage 5                    ',end='');sys.stdout.flush()
+    def semi_final(self): #--> Sortir
+        print('\rLolos Tahap 5                    ',end='');sys.stdout.flush()
         cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()])
         cok += self.perangkat
         try:
-            if len(reco)/2 != len(auth1): clear(); exit('This Person Was Told Not To Recode, Stubborn')
+            if len(reco)/2 != len(auth1): clear(); exit('Ini Orang Dibilangin Gausah Direcode, Ngeyel Amat')
             else:
                 id = re.search('c_user=(.*?);',cok).group(1)
                 self.zero_optin()
@@ -516,17 +520,17 @@ def zero_optin(self): #--> For Data Mode (No WiFi)
                 else: self.printing('CP')
         except Exception as e:
             self.printing('CP')
-    def printing(self,stat): #--> Print Result
+    def printing(self,stat): #--> Print Hasil
         global ok, cp
         if stat == 'OK':
             cookie = cvt('ok',self.xyz.cookies.get_dict())
             id = self.xyz.cookies.get_dict()['c_user']
             print('\r%sStatus : %sSuccess%s                         '%(P,H,P))
-            print('Name   : %s'%(str(self.name)))
+            print('Nama   : %s'%(str(self.name)))
             print('ID     : %s'%(str(id)))
             print('Pass   : %s'%(str(self.pw)))
             print('Email  : %s'%(str(self.email)))
-            print('DOB    : %s %s %s'%(self.ttl['tgl'],bulan[self.ttl['bln']],self.ttl['thn']))
+            print('TTL    : %s %s %s'%(self.ttl['tgl'],bulan[self.ttl['bln']],self.ttl['thn']))
             print('Cookie : %s\n'%(str(cookie)))
             open(self.file,'a+').write('%s|%s|%s|%s\n'%(self.name,id,self.email,self.pw))
             ok += 1
@@ -534,14 +538,14 @@ def zero_optin(self): #--> For Data Mode (No WiFi)
             if tampil in ['t','2','02','b']: pass
             else:
                 print('\r%sStatus : %sCheckpoint%s                         '%(P,M,P))
-                print('Name   : %s'%(str(self.name)))
-                print('Phone  : %s'%(str(self.nope)))
+                print('Nama   : %s'%(str(self.name)))
+                print('Nope   : %s'%(str(self.nope)))
                 print('Pass   : %s\n'%(str(self.pw)))
             cp += 1
 
 #--> Menu Checker Account
 class menu_check:
-    def __init__(self): #--> Verify Folder Existence
+    def __init__(self): #--> Mengecek Ketersediaan Folder
         self.xyz = requests.Session()
         self.file = {}
         self.isi = 0
@@ -558,10 +562,10 @@ class menu_check:
                 print(c)
             self.sortir()
         else:
-            print('%sSorry, No Results Yet %s:(%s\n'%(P,M,P))
-    def sortir(self): #--> Select File
+            print('%sMaaf, Belum Ada Hasil %s:(%s\n'%(P,M,P))
+    def sortir(self): #--> Memilih File
         try:
-            d = input('\n%s[%s•%s] %sEnter File : '%(M,P,M,P))
+            d = input('\n%s[%s•%s] %sMasukkan File : '%(M,P,M,P))
             if d in list(self.file.keys()): l = 'Akun_New/%s'%(self.file[d])
             else: l = 'Akun_New/%s'%(d)
             g = open(l,'r').read().splitlines()
@@ -573,27 +577,28 @@ class menu_check:
                     if stat == 'OK': self.printing('OK',nama,id,email,pw)
                     else: self.printing('CP',nama,id,email,pw)
                 except Exception as e: pass
-            if self.isi == 0: print('%sNo Results :(\n%s'%(M,P))
-            else: print('%sFrom %s Accounts, There Are %s%s CP Accounts %sand %s%s OK Accounts\n%s'%(P,str(self.isi),M,str(self.cp),P,H,str(self.ok),P))
+            if self.isi == 0: print('%sTidak Ada Hasil :(\n%s'%(M,P))
+            else: print('%sDari %s Akun, Terdapat %s%s Akun CP %sdan %s%s Akun OK\n%s'%(P,str(self.isi),M,str(self.cp),P,H,str(self.ok),P))
         except Exception as e:
             print('%sError : %s'%(P,e))
-            print('%sAn Error Occurred!\n%s'%(M,P))
-    def printing(self,stat,nama,id,email,pw): #--> Print Check Results
+            print('%sTerjadi Kesalahan!\n%s'%(M,P))
+    def printing(self,stat,nama,id,email,pw): #--> Print Hasil Cek
         if stat == 'OK':
             print('\r%sStatus : %sSuccess%s                         '%(P,H,P))
-            print('Name   : %s'%(str(nama)))
+            print('Nama   : %s'%(str(nama)))
             print('ID     : %s'%(str(id)))
             print('Pass   : %s'%(str(pw)))
             print('Email  : %s\n'%(str(email)))
             self.ok += 1
         else:
             print('\r%sStatus : %sCheckpoint%s                         '%(P,M,P))
-            print('Name   : %s'%(str(nama)))
+            print('Nama   : %s'%(str(nama)))
             print('ID     : %s'%(str(id)))
             print('Pass   : %s'%(str(pw)))
             print('Email  : %s\n'%(str(email)))
             self.cp += 1
         self.isi += 1
+
 #--> Check Account
 def check_account(id):
     url = f'https://www.facebook.com/p/{id}'
@@ -606,9 +611,9 @@ def check_account(id):
 
 #--> Notice
 def belum_tersedia():
-    print('%sSorry, This Feature %sIs Not Available Yet%s'%(P,M,P))
-    print('%sWait For Next Update...'%(P))
-    print('%sThank You!'%(P))
+    print('%sMaaf, Fitur Ini %sBelum Tersedia%s'%(P,M,P))
+    print('%sTunggu Update Selanjutnya...'%(P))
+    print('%sTerima Kasih!'%(P))
     print('%s- %sDapunta%s\n'%(P,H,P))
 
 #--> Trigger

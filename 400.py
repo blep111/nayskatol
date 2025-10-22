@@ -53,7 +53,6 @@ def waktu():
     _bulan_  = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][datetime.now().month - 1]
     hari_ini = ("%s%s%s"%(datetime.now().day,_bulan_,datetime.now().year))
     return(str(hari_ini.lower()))
-
 #--> Delay helper
 def jeda(t):
     for x in range(t+1):
@@ -222,7 +221,6 @@ class menu_create:
             print('\r[%sOK:%s%s] [%sCP:%s%s] Wait %s Seconds         '%(H,str(ok),P,M,str(cp),P,str(a)),end='');sys.stdout.flush()
             a -= 1
             time.sleep(1)
-
 #--> Create Facebook Account
 class create_fb:
 
@@ -278,7 +276,6 @@ class create_fb:
             name = f'{nam1} {nam2} {nam3}'
         klop = f'{name}|{gder}'
         return(klop)
-
 #--> Generate Random Phone Number
     def get_nope(self):
         na   = random.choice(['77','78','59'])
@@ -487,7 +484,6 @@ def scrap3(self,fom): #--> Request Phone Code
             self.semi_final()
         except Exception as e:
             self.printing('CP')
-
 def zero_optin(self): #--> For Data Mode (No WiFi)
         try:
             cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()]) + self.perangkat

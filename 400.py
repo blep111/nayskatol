@@ -179,48 +179,55 @@ class menu:
 class menu_create:
     def __init__(self):
         global kelamin, namstat, nameme, web_email, tampil, useragent, uman, passtat, password
-        try:os.mkdir('Akun_New')
-        except Exception as e :pass
-        print('      %s◉ %sRekomendasi   %s◉ %sTidak Rekomendasi   ◉ Netral'%(H,P,M,P))
+        try:
+            os.mkdir('Akun_New')
+        except Exception as e:
+            pass
+        print('      %s◉ %sRecommended   %s◉ %sNot Recommended   ◉ Neutral' % (H, P, M, P))
         print('')
-        kelamin   = input('%s[%s•%s] %sAkun Laki/Perempuan/Random [%sl%s/%sp%s/%sr%s] : '%(M,P,M,P,H,P,H,P,M,P)).lower()
-        namanama  = input('%s[%s•%s] %sGunakan Nama Random/Manual [%sr%s/%sm%s] : '%(M,P,M,P,M,P,H,P)).lower()
-        if namanama in ['m','manual','0','00']:
+        kelamin = input('%s[%s•%s] %sMale/Female/Random Account [%sl%s/%sp%s/%sr%s] : ' % (M, P, M, P, H, P, H, P, M, P)).lower()
+        namanama = input('%s[%s•%s] %sUse Random/Manual Name [%sr%s/%sm%s] : ' % (M, P, M, P, M, P, H, P)).lower()
+        if namanama in ['m', 'manual', '0', '00']:
             namstat = 'Manual'
-            nameme = input(' %s└─ %sNama : %s'%(M,P,M)).split(',')
+            nameme = input(' %s└─ %sName : %s' % (M, P, M)).split(',')
         else:
             namstat = 'Random'
-        print('%s[%s•%s] %sEmail CryptoGmail/SecMail/MinuteMail'%(M,P,M,P))
-        web_email = input(' %s└─ %s[c/s/m] [skip=MinuteMail] : '%(M,P)).lower()
-        tampil    = input('%s[%s•%s] %sTampilkan Akun CP [%sy%s/%st%s] : '%(M,P,M,P,M,P,H,P)).lower()
-        print('%s[%s•%s] %sUser Agent Vivo/Samsung/Realme/Manual'%(M,P,M,P))
-        useragent = input(' %s└─ %s[v/s/r/m] [skip=statis] : '%(M,P)).lower()
-        if useragent in ['m','manual','0','00']:
-            uman = input(' %s└─ %sUser Agent : %s'%(M,P,M))
+        print('%s[%s•%s] %sEmail CryptoGmail/SecMail/MinuteMail' % (M, P, M, P))
+        web_email = input(' %s└─ %s[c/s/m] [skip=MinuteMail] : ' % (M, P)).lower()
+        tampil = input('%s[%s•%s] %sShow CP Account [%sy%s/%st%s] : ' % (M, P, M, P, M, P, H, P)).lower()
+        print('%s[%s•%s] %sUser Agent Vivo/Samsung/Realme/Manual' % (M, P, M, P))
+        useragent = input(' %s└─ %s[v/s/r/m] [skip=static] : ' % (M, P)).lower()
+        if useragent in ['m', 'manual', '0', '00']:
+            uman = input(' %s└─ %sUser Agent : %s' % (M, P, M))
             if uman == '' or uman == ' ':
-                exit('%sIsi Yang Benar!%s'%(M,P))
+                exit('%sEnter Correctly!%s' % (M, P))
         else:
             uman = 'Mozilla/5.0 (Linux; Android 13; RMX3686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.36'
-        passtat   = input('%s[%s•%s] %sGunakan Password Random/Manual [%sr%s/%sm%s] : '%(M,P,M,P,H,P,M,P)).lower()
-        if passtat in ['m','manual','b','2','02']:
-            password = input(' %s└─ %sPassword : %s'%(M,P,M))
+        passtat = input('%s[%s•%s] %sUse Random/Manual Password [%sr%s/%sm%s] : ' % (M, P, M, P, H, P, M, P)).lower()
+        if passtat in ['m', 'manual', 'b', '2', '02']:
+            password = input(' %s└─ %sPassword : %s' % (M, P, M))
             if len(password) < 6:
-                exit('%sPassword Minimal 6 Digit!%s'%(M,P))
-            if password in ['akusayangkamu','123456','iloveyou','password','qwerty','sayang','anjing','bismillah']:
-                exit('%sGunakan Password Yang Kuat!%s'%(M,P))
+                exit('%sPassword Must Be At Least 6 Digits!%s' % (M, P))
+            if password in ['akusayangkamu', '123456', 'iloveyou', 'password', 'qwerty', 'sayang', 'anjing', 'bismillah']:
+                exit('%sUse a Stronger Password!%s' % (M, P))
         else:
             password = 'dapuntaloverani'
-        d = input('%s[%s•%s] %sBeri Delay (%sDalam Menit%s) : '%(M,P,M,P,M,P))
+        d = input('%s[%s•%s] %sSet Delay (%sIn Minutes%s) : ' % (M, P, M, P, M, P))
         if d == '' or d == ' ':
             d = 1
         print('')
-        l = int(d)*60
+        l = int(d) * 60
         for y in range(10000):
-            if key/len(auth1) == len(reco)/2: create_fb(); self.hitung(l)
-            else: print(reco)
-    def hitung(self,a):
-        for x in range(a+1):
-            print('\r[%sOK:%s%s] [%sCP:%s%s] Tunggu %s Detik         '%(H,str(ok),P,M,str(cp),P,str(a)),end='');sys.stdout.flush()
+            if key / len(auth1) == len(reco) / 2:
+                create_fb()
+                self.hitung(l)
+            else:
+                print(reco)
+
+    def hitung(self, a):
+        for x in range(a + 1):
+            print('\r[%sOK:%s%s] [%sCP:%s%s] Wait %s Seconds         ' % (H, str(ok), P, M, str(cp), P, str(a)), end='')
+            sys.stdout.flush()
             a -= 1
             time.sleep(1)
 

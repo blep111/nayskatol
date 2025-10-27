@@ -22,8 +22,8 @@ os.system('xdg-open https://github.com/blep111')
 
 
 
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#!/Tite
+# -*- TITE -*-
 import os
 import sys
 import subprocess

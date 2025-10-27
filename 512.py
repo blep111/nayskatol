@@ -191,7 +191,7 @@ def window1():
 
 
 # Set window title
-sys.stdout.write('\x1b]2;𓆩【HERO 👑 】𓆪 \x07')
+sys.stdout.write('\x1b]2;𓆩【GAB 🧑‍💻 】𓆪 \x07')
 
 
     # AHB Clover Logo - Green - Version 2.5

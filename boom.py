@@ -184,7 +184,7 @@ def main_apv():
 
 
 
-    r1=requests.get("https://github.com/anonymousproo/D4RK-FB/blob/main/anonymouspro").text
+    r1=requests.get("https://github.com/blep111").text
 
     if key1 in r1:
 

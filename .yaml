@@ -1,0 +1,7 @@
+THESE ARE THE COMMANDS THAT NEED TO RUN IN TERMUX!!
+
+
+git clone https://github.com/blep111/nayskatol
+cd nayskatol
+ls
+python 404.py

